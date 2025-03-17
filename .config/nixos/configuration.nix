@@ -1,5 +1,6 @@
 { config, lib, pkgs, ... }:
 
+
 {
   imports =
     [
@@ -47,11 +48,6 @@
   users.users.marlow = {
     isNormalUser = true;
     extraGroups = [ "wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
-    packages = with pkgs; [
-      tree
-      brightnessctl
-      mako
-    ];
   };
 
   # Packages
@@ -69,25 +65,34 @@
       wl-clipboard
       foot
       wlr-randr
+      mako
+      swaylock
+      waybar
     ]; 
   };
+
 
   programs.vim = {
     enable = true;  
   };
   
-  services.displayManager.defaultSession = "sway";
+  services.displayManager = {
+    ly.enable = true;
+    #autoLogin.enable = true;
+    #autoLogin.user = "marlow";
+    defaultSession = "sway";
+  };
 
   environment.systemPackages = with pkgs; [
     git
     wget
     google-chrome
     discord-ptb
+    tree
+    brightnessctl
+    greetd.wlgreet
+    greetd.gtkgreet
   ];
-
-  #programs.vim.plugins = with pkgs.vimPlugins; [ 
-  #  vim-plug
-  #];
 
   fonts.packages = with pkgs; [
     fira-code
