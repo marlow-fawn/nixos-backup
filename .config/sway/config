@@ -1,10 +1,28 @@
-#exec "/run/current-system/sw/bin/gtkgreet; swaymsg exit"
-
+# Vars
 set $mod Mod4
+
+# Navigation
 bindsym $mod+Return exec foot
 bindsym $mod+b exec google-chrome-stable
 bindsym $mod+q kill
 bindsym $mod+r reload
+bindsym $mod+o exec fuzzel
+bindsym $mod+Shift+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
+bindsym $mod+Shift+Left move left
+bindsym $mod+Shift+Down move down
+bindsym $mod+Shift+Up move up
+bindsym $mod+Shift+Right move right
+bindsym $mod+c splith
+bindsym $mod+v splitv
+bindsym $mod+f fullscreen
+
+bindsym $mod+j resize shrink width 10px
+bindsym $mod+i resize grow height 10px
+bindsym $mod+k resize shrink height 10px
+bindsym $mod+l resize grow width 10px
+
+
+# Media keys
 bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
 bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
 bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
@@ -13,15 +31,12 @@ bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 bindsym XF86MonBrightnessUp exec brightnessctl set +10%
 bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+
+# Extra programs
 exec mako
+exec yambar
 
-bindsym $mod+Ctrl+Right exec swaymsg split h, focus right
-bindsym $mod+Ctrl+Left exec swaymsg split h, focus left
-bindsym $mod+Ctrl+Up exec swaymsg split v, focus up
-bindsym $mod+Ctrl+Down exec swaymsg split v, focus down
-
-smart_borders on
-
+# Touchpad
 input "type:touchpad" {
     dwt enabled
     dwtp enabled
@@ -29,4 +44,8 @@ input "type:touchpad" {
     tap_button_map lrm
 }
 
-
+# Visual
+default_border pixel 1
+gaps inner 3
+smart_borders on
+smart_gaps on
