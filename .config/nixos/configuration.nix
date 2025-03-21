@@ -1,11 +1,27 @@
 { config, lib, pkgs, ... }:
 
-
 {
   imports =
     [
       /etc/nixos/hardware-configuration.nix
     ];
+
+  # Nix settings
+  nix.gc = {
+    automatic = true;
+    dates = "weekly";
+    options = "--delete-older-than 30d";
+  };
+  time.timeZone = "America/New_York";
+  system.stateVersion = "24.11";
+
+  # Env vars
+  environment.variables = {
+    EDITOR = "vim";
+    XDG_CURRENT_DESKTOP = "sway";
+    XDG_SESSION_TYPE = "wayland";
+    XDG_DESKTOP_PORTAL = "xdg-desktop-portal-wlr";
+  };
 
   # Use the systemd-boot EFI boot loader.
   boot.loader.systemd-boot.enable = true;
@@ -14,27 +30,29 @@
   # GPU
   hardware.graphics.enable = true;
   services.xserver.videoDrivers = [ "intel" ];
-  
 
   # Networking
-  networking.hostName = "marlow-nixos"; 
-  networking.networkmanager.enable = true;
-  networking.networkmanager.wifi.powersave = false;
-  
+  networking = {
+    hostName = "marlow-nixos"; 
+    networkmanager = {
+      enable = true;
+      dns = "systemd-resolved";
+      wifi.powersave = false;
+    };
+  };
+
+  services.resolved = {
+    enable = true;
+  };
+
+  xdg.portal = {
+    enable = true;
+    wlr.enable = true;
+  };
+
   # Bluetooth
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   services.blueman.enable = true;
-
-  # Set your time zone.
-  time.timeZone = "America/New_York";
-  
-  # Env vars
-  environment.variables = {
-    EDITOR = "vim";
-    XDG_CURRENT_DESKTOP = "sway";
-    XDG_SESSION_TYPE = "wayland";
-    XDG_PORTAL_FORCE = "1";
-  };
   
   # Users
   users.users.marlow = {
@@ -46,13 +64,10 @@
 
   # Packages
   environment.systemPackages = with pkgs; [
-    git
-    wget
-    google-chrome
-    discord-ptb
-    tree
-    brightnessctl
-    xdg-desktop-portal xdg-desktop-portal-wlr
+    git wget
+    google-chrome discord-ptb obsidian
+    tree brightnessctl
+    gammastep
   ];
   nixpkgs.config.allowUnfree = true; 
   
@@ -120,7 +135,6 @@
   
   #Audio
   services.pipewire.enable = true;
-
-  system.stateVersion = "24.11";
+  
 }
 
