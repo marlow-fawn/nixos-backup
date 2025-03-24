@@ -4,14 +4,19 @@
   imports =
     [
       /etc/nixos/hardware-configuration.nix
+      ./intranet.nix
     ];
 
   # Nix settings
   nix.gc = {
     automatic = true;
-    dates = "weekly";
-    options = "--delete-older-than 30d";
+    dates = "daily";
+    options = "--delete-older-than 7d";
   };
+
+  nix.settings.auto-optimise-store = true;
+  boot.loader.systemd-boot.configurationLimit = 5; 
+
   time.timeZone = "America/New_York";
   system.stateVersion = "24.11";
 
@@ -50,6 +55,9 @@
     wlr.enable = true;
   };
 
+  services.tailscale = {
+    enable = true;
+  };
   # Bluetooth
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   services.blueman.enable = true;
@@ -63,13 +71,15 @@
   ### Packages
 
   # Packages
+  nixpkgs.config.allowUnfree = true; 
+  
   environment.systemPackages = with pkgs; [
     git wget
     google-chrome discord-ptb obsidian
     tree brightnessctl
     gammastep
+    spotifywm
   ];
-  nixpkgs.config.allowUnfree = true; 
   
   # Font Packages
   fonts.packages = with pkgs; [

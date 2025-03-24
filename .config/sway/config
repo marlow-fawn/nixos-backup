@@ -26,7 +26,9 @@ bindsym $mod+j resize shrink width 10px
 bindsym $mod+i resize grow height 10px
 bindsym $mod+k resize shrink height 10px
 bindsym $mod+l resize grow width 10px
-
+bindsym $mod+minus move scratchpad
+bindsym $mod+equal scratchpad show
+bindsym $mod+space floating toggle
 
 # Media keys
 bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
@@ -41,6 +43,7 @@ bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
 # Extra programs
 exec mako
 exec yambar
+exec gammastep
 
 # Touchpad
 input "type:touchpad" {
