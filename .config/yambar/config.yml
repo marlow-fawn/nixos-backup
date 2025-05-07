@@ -6,7 +6,6 @@ bar:
   font: FiraCode:pixelsize=30
   background: 282c34ff
   foreground: abb2bfff
-  spacing: 40
   margin: 20
 
   right:
@@ -30,6 +29,7 @@ bar:
                       - string: {text: , font: *awesome}
                       - string: {text: , font: *awesome}
                       - string: {text: , foreground: 00ff00ff, font: *awesome}
+                - string: {text: " ", margin: 20}  # Adds space between the ramp and text
                 - string: {text: "{capacity}% {estimate}"}
         content:
           map:
@@ -48,16 +48,17 @@ bar:
                 - ramp:
                     tag: capacity
                     items:
-                      - string: {text:  , foreground: ff0000ff, font: *awesome}
-                      - string: {text:  , foreground: ffa600ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
-                      - string: {text:  , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:   , foreground: ff0000ff, font: *awesome}
+                      - string: {text:   , foreground: ffa600ff, font: *awesome}
+                      - string: {text:   , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:   , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:   , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:   , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:   , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:   , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:   , foreground: 00ff00ff, font: *awesome}
+                      - string: {text:   , foreground: 00ff00ff, font: *awesome}
+                - string: {text: " ", margin: 20}  # Adds space between the ramp and text
                 - string: {text: "{capacity}%"}
   center:
     - clock:

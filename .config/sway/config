@@ -30,15 +30,25 @@ bindsym $mod+minus move scratchpad
 bindsym $mod+equal scratchpad show
 bindsym $mod+space floating toggle
 
-# Media keys
-bindsym XF86AudioRaiseVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%+
-bindsym XF86AudioLowerVolume exec wpctl set-volume @DEFAULT_AUDIO_SINK@ 5%-
-bindsym XF86AudioMute exec wpctl set-mute @DEFAULT_AUDIO_SINK@ toggle
+bindsym XF86AudioRaiseVolume exec ~/.config/notify-media.sh volume-up
+bindsym XF86AudioLowerVolume exec ~/.config/notify-media.sh volume-down
+bindsym XF86AudioMute exec ~/.config/notify-media.sh mute
+
+bindsym XF86MonBrightnessUp exec ~/.config/notify-media.sh brightness-up
+bindsym XF86MonBrightnessDown exec ~/.config/notify-media.sh brightness-down
+
 bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
-bindsym XF86MonBrightnessUp exec brightnessctl set +10%
-bindsym XF86MonBrightnessDown exec brightnessctl set 10%-
+
+# Fullscreen screenshot, save to ~/Pictures
+bindsym Print exec grim ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png
+
+# Region screenshot to clipboard
+bindsym Shift+Print exec grim -g "$(slurp)" - | wl-copy
+
+# Region screenshot, open in swappy
+bindsym Ctrl+Print exec grim -g "$(slurp)" /tmp/screenshot.png && swappy -f /tmp/screenshot.png
 
 # Extra programs
 exec mako
