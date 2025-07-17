@@ -33,31 +33,11 @@
   boot.loader.efi.canTouchEfiVariables = true;
 
   boot = {
-#    plymouth = {
-#      enable = true;
-#      theme = "rings";
-#      themePackages = with pkgs; [
-#        # By default we would install all themes
-#        (adi1090x-plymouth-themes.override {
-#          selected_themes = [ "rings" ];
-#        })
-#      ];
-#    };
-
-    # Enable "Silent boot"
-    #consoleLogLevel = 3;
-    #initrd.verbose = false;
-    #kernelParams = [
-    #  "quiet"
-    #  "splash"
-    #  "boot.shell_on_fail"
-    #  "udev.log_priority=3"
-    #  "rd.systemd.show_status=auto"
-    # ];
-    # Hide the OS choice for bootloaders.
-    # It's still possible to open the bootloader list by pressing any key
-    # It will just not appear on screen unless a key is pressed
-    #loader.timeout = 0;
+    consoleLogLevel = 1;
+    initrd.verbose = false;
+    kernelParams = [
+      "quiet"
+    ];
   };
 
   # GPU
@@ -88,7 +68,8 @@
   services.fail2ban.enable = true;
   networking.firewall = {
     enable = true;
-    allowedTCPPorts = [ 22 ];
+    allowedUDPPorts = [ 5353 ];           # 5353 = mDNS (used by Avahi)
+    allowedTCPPorts = [ 22 631 ];
   };
 
   # JP Input
@@ -111,11 +92,14 @@
 
   services.avahi = {
     enable = true;
+    nssmdns4 = true;
+    openFirewall = true;
   };
 
   services.tailscale = {
     enable = true;
   };
+
   # Bluetooth
   hardware.bluetooth.enable = true; # enables support for Bluetooth
   services.blueman.enable = true;
@@ -123,49 +107,54 @@
   # Users
   users.users.marlow = {
     isNormalUser = true;
-    extraGroups = [ "wheel" "networkmanager"]; # Enable ‘sudo’ for the user.
+    extraGroups = [ "wheel" "networkmanager" "adbusers" "kvm"]; # Enable ‘sudo’ for the user.
   };
 
   ### Packages
 
   # Packages
   nixpkgs.config.allowUnfree = true; 
-  
+  programs.adb.enable = true;
   environment.systemPackages = with pkgs; [
     # Work 
-    jetbrains.idea-community sshfs jdk17
+    sshfs jdk17 zip unzip
     zoom-us slack texliveSmall
-    python3
+    #python3 gcc libgcc cmake 
 
     # Dev
     git wget clang 
-
+    jetbrains.pycharm-community
+    jetbrains.idea-community
+    
     # Desktop
-    google-chrome discord-ptb obsidian
+    google-chrome discord-ptb obsidian brave
     
     # Hobbies
-    zrythm spotifywm
+    zrythm spotifywm gimp
     
     # Util
     tree brightnessctl gammastep libnotify
     grim slurp swappy vlc
 
   ];
-  
+ 
+  fonts.packages = builtins.filter lib.attrsets.isDerivation (builtins.attrValues pkgs.nerd-fonts);
+
   # Font Packages
-  fonts.packages = with pkgs; [
-    nerdfonts
-  ];
+  #fonts.packages = with pkgs; [
+  #  nerdfonts
+  #];
   
   ### Programs
-  programs.obs-studio = {
-    enable = true;
-    plugins = with pkgs.obs-studio-plugins; [
-      wlrobs
-      obs-backgroundremoval
-      obs-pipewire-audio-capture
-    ];
-  };
+#  programs.obs-studio = {
+#    enable = true;
+#    plugins = with pkgs.obs-studio-plugins; [
+#      wlrobs
+#      obs-backgroundremoval
+#      obs-pipewire-audio-capture
+#    ];
+#  };
+
   # Sway
   programs.sway = {
     enable = true;
@@ -177,8 +166,8 @@
       fuzzel
     ]; 
   };
-  programs.xwayland.enable = true;
 
+  programs.xwayland.enable = true;
   services.xserver.enable = true;
   services.xserver.displayManager.startx.enable = true; # Optional for minimal setups
   
@@ -211,12 +200,8 @@
           CPU_SCALING_GOVERNOR_ON_AC = "performance";
           CPU_SCALING_GOVERNOR_ON_BAT = "powersave";
 
-          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
           CPU_ENERGY_PERF_POLICY_ON_AC = "performance";
-
-         #Optional helps save long term battery health
-         START_CHARGE_THRESH_BAT0 = 50; 
-         STOP_CHARGE_THRESH_BAT0 = 90;
+          CPU_ENERGY_PERF_POLICY_ON_BAT = "power";
 
         };
   };

@@ -4,10 +4,11 @@ exec systemctl --user import-environment
 set $mod Mod4
 # Navigation
 bindsym $mod+Return exec foot
-bindsym $mod+b exec google-chrome-stable
+bindsym $mod+b exec brave
 bindsym $mod+q kill
 bindsym $mod+r reload
 bindsym $mod+o exec fuzzel
+bindsym $mod+p exec obsidian
 bindsym $mod+Shift+q exec swaynag -t warning -m 'You pressed the exit shortcut. Do you really want to exit sway? This will end your Wayland session.' -B 'Yes, exit sway' 'swaymsg exit'
 bindsym $mod+Shift+Left move left
 bindsym $mod+Shift+Down move down
@@ -17,11 +18,42 @@ bindsym $mod+Left focus left
 bindsym $mod+Down focus down
 bindsym $mod+Up focus up
 bindsym $mod+Right focus right
+# Set mod key
+set $mod Mod4
+
+# Switch to workspace
+bindsym $mod+1 workspace 1
+bindsym $mod+2 workspace 2
+bindsym $mod+3 workspace 3
+bindsym $mod+4 workspace 4
+bindsym $mod+5 workspace 5
+bindsym $mod+6 workspace 6
+bindsym $mod+7 workspace 7
+bindsym $mod+8 workspace 8
+bindsym $mod+9 workspace 9
+bindsym $mod+0 workspace 10
+
+# Move focused container to workspace
+bindsym $mod+Shift+1 move container to workspace 1
+bindsym $mod+Shift+2 move container to workspace 2
+bindsym $mod+Shift+3 move container to workspace 3
+bindsym $mod+Shift+4 move container to workspace 4
+bindsym $mod+Shift+5 move container to workspace 5
+bindsym $mod+Shift+6 move container to workspace 6
+bindsym $mod+Shift+7 move container to workspace 7
+bindsym $mod+Shift+8 move container to workspace 8
+bindsym $mod+Shift+9 move container to workspace 9
+bindsym $mod+Shift+0 move container to workspace 10
+bindsym $mod+Tab workspace back_and_forth
+bindsym $mod+Shift+Tab move container to workspace back_and_forth; workspace back_and_forth
+
+
 
 bindsym $mod+c splith
 bindsym $mod+v splitv
 bindsym $mod+f fullscreen
 
+# Window sizing
 bindsym $mod+j resize shrink width 10px
 bindsym $mod+i resize grow height 10px
 bindsym $mod+k resize shrink height 10px
@@ -30,6 +62,7 @@ bindsym $mod+minus move scratchpad
 bindsym $mod+equal scratchpad show
 bindsym $mod+space floating toggle
 
+# Media Keys
 bindsym XF86AudioRaiseVolume exec ~/.config/notify-media.sh volume-up
 bindsym XF86AudioLowerVolume exec ~/.config/notify-media.sh volume-down
 bindsym XF86AudioMute exec ~/.config/notify-media.sh mute
@@ -41,12 +74,11 @@ bindsym XF86AudioPlay exec playerctl play-pause
 bindsym XF86AudioNext exec playerctl next
 bindsym XF86AudioPrev exec playerctl previous
 
+### Screenshots
 # Fullscreen screenshot, save to ~/Pictures
 bindsym Print exec grim ~/Pictures/screenshot-$(date +'%Y%m%d-%H%M%S').png
-
 # Region screenshot to clipboard
 bindsym Shift+Print exec grim -g "$(slurp)" - | wl-copy
-
 # Region screenshot, open in swappy
 bindsym Ctrl+Print exec grim -g "$(slurp)" /tmp/screenshot.png && swappy -f /tmp/screenshot.png
 
